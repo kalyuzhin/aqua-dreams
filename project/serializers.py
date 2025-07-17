@@ -1,11 +1,13 @@
 # serializers.py
 from rest_framework import serializers
-from .models import Project, ProjectDetail
+from .models import Project, ProjectDetail, ProjectCategory, ProjectCategoryImages
+
 
 class ProjectDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectDetail
         fields = ['text']
+
 
 class ProjectSerializer(serializers.ModelSerializer):
     details = ProjectDetailSerializer(many=True, read_only=True)
@@ -21,3 +23,15 @@ class ProjectSerializer(serializers.ModelSerializer):
             if request:
                 return request.build_absolute_uri(obj.image.url)
         return None
+
+
+class ProjectCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProjectCategory
+        fields = ['id', 'name', 'description', 'created_at', 'updated_at']
+
+
+class ProjectCategoryImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProjectCategoryImages
+        fields = ['id', 'image', 'category']
